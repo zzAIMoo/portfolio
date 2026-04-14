@@ -1,0 +1,17 @@
+.skills-section {
+  padding-top: calc(var(--space-section) + 60px);
+}
+
+.skills-physics-container {
+  width: 100%;
+  height: 600px;
+  position: relative;
+  margin-top: 2rem;
+  pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+  .skills-physics-container {
+    height: 800px; 
+  }
+}

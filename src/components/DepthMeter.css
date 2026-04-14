@@ -1,0 +1,102 @@
+.depth-meter {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-depth-meter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  pointer-events: none;
+}
+
+.depth-meter-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-mono);
+}
+
+.depth-meter-number {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  color: var(--bio-cyan);
+  text-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+  line-height: 1;
+}
+
+.depth-meter-unit {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.depth-meter-track {
+  position: relative;
+  width: 3px;
+  height: 280px;
+  background: rgba(34, 211, 238, 0.1);
+  border-radius: var(--radius-full);
+  overflow: visible;
+}
+
+.depth-meter-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to bottom, var(--bio-cyan), var(--bio-purple));
+  border-radius: var(--radius-full);
+  transition: height 100ms linear;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+.depth-meter-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.depth-meter-marker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.3);
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  transition: all var(--transition-base);
+}
+
+.depth-meter-marker.active .depth-meter-marker-dot {
+  background: var(--bio-cyan);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+  transform: scale(1.3);
+}
+
+.depth-meter-marker-label {
+  position: absolute;
+  right: 16px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateX(5px);
+  transition: all var(--transition-base);
+}
+
+.depth-meter-marker.active .depth-meter-marker-label {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--bio-cyan);
+}
+
+@media (max-width: 768px) {
+  .depth-meter {
+    display: none;
+  }
+}

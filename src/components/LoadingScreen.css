@@ -1,0 +1,89 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-loading);
+  background: linear-gradient(180deg, #041525, #000508);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.loading-screen.done {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  z-index: 1;
+}
+
+.loading-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--bio-cyan);
+  animation: float 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.5));
+}
+
+.loading-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.loading-phase {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text-secondary);
+  min-height: 1.5em;
+  transition: all var(--transition-base);
+}
+
+.loading-bar {
+  width: 200px;
+  height: 3px;
+  background: rgba(34, 211, 238, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--bio-cyan), var(--bio-teal));
+  border-radius: var(--radius-full);
+  transition: width 50ms linear;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+.loading-depth {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.loading-bubbles {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.loading-bubble {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 50%;
+  background: rgba(34, 211, 238, 0.15);
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  animation: bubbleRise 5s ease-in infinite;
+}

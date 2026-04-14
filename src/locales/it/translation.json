@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "about": "Chi Sono",
+    "skills": "Competenze",
+    "projects": "Progetti",
+    "legacy": "Legacy",
+    "contact": "Contatti"
+  },
+  "hero": {
+    "greeting": "Ogni grande immersione",
+    "greetingHighlight": "inizia con un respiro",
+    "name": "SIMONE SECHI",
+    "title": "Full Stack Developer",
+    "cta": "Inizia l'immersione",
+    "scrollHint": "Scorri per immergerti"
+  },
+  "about": {
+    "heading": "Chi Sono",
+    "intro": "Full Stack Developer con 4 anni di esperienza, appassionato di oceano profondo e apnea.",
+    "description": "Lavoro presso Tinke dove sviluppo soluzioni full-stack. Nei primi 2 anni ho lavorato con Angular e Symfony, poi mi sono spostato sul backend con Symfony e Python, specializzandomi in AI con LangChain e LangGraph. Attualmente sto sviluppando un SaaS Multi-Tenant con sistema multi-agentico per la creazione di agenti personalizzati.",
+    "passion": "Amo l'oceano profondo, il freediving e Subnautica. Il mio record personale di apnea è di 22 metri."
+  },
+  "skills": {
+    "heading": "Competenze",
+    "subtitle": "Le tecnologie con cui lavoro quotidianamente",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "ai": "AI & ML",
+      "tools": "Tools & DevOps"
+    }
+  },
+  "projects": {
+    "heading": "Progetti",
+    "subtitle": "I progetti su cui sto lavorando attualmente",
+    "saas": {
+      "title": "SaaS Multi-Agent Platform",
+      "description": "Sistema Multi-Tenant multi-agentico che permette la creazione di agenti AI personalizzati. Sviluppato con Symfony e Python (LangChain/LangGraph).",
+      "note": "Screenshot in arrivo - progetto aziendale in fase di sviluppo."
+    },
+    "restaurant": {
+      "title": "Restaurant Starter Kit",
+      "description": "CLI tool per creare e gestire siti web per ristoranti in modo rapido e scalabile. Architettura monorepo con design system condiviso.",
+      "tech": "Node.js, HTML/CSS/JS, CLI Custom"
+    },
+    "icdome": {
+      "title": "ICDome",
+      "description": "App mobile (iOS/Android) per il Travel Security Management aziendale. Gestione emergenze (SOS), monitoraggio viaggi e avvisi in tempo reale. Sviluppata in Angular con backend Symfony.",
+      "note": "Applicazione riservata B2B."
+    },
+    "viewProject": "Vedi Progetto",
+    "comingSoon": "Coming Soon"
+  },
+  "legacy": {
+    "heading": "Progetti Legacy",
+    "subtitle": "I miei primi progetti, creati durante le superiori - i fossili del mio percorso",
+    "paleoscovery": {
+      "title": "Paleoscovery",
+      "description": "Gioco educativo su Pietro Paleocapa sviluppato in Unity con 2 miei compagni."
+    },
+    "beedone": {
+      "title": "BeeDone",
+      "description": "App mobile per la gestione delle attività sviluppata in Flutter."
+    },
+    "flows": {
+      "title": "Flows Music",
+      "description": "App mobile per streaming musicale sviluppata in Flutter."
+    },
+    "tod": {
+      "title": "Truth or Dare",
+      "description": "Gioco mobile Truth or Dare sviluppato in Unity."
+    },
+    "drunkcards": {
+      "title": "Drunk Cards",
+      "description": "Gioco mobile con carte con minigiochi carini"
+    }
+  },
+  "contact": {
+    "heading": "Contatti",
+    "subtitle": "Raggiungiamo insieme nuove profondità",
+    "cta": "Scrivimi",
+    "email": "simone.sechi24@gmail.com",
+    "social": "Seguimi"
+  },
+  "abyss": {
+    "question": "Quanto in profondità sei disposto ad andare?",
+    "secret": "Hai raggiunto il fondo dell'abisso. Complimenti, esploratore."
+  },
+  "depth": {
+    "meters": "m",
+    "depthLabel": "Profondità"
+  },
+  "records": {
+    "surface": "Superficie",
+    "personal": "Il mio record personale",
+    "maiorca": "Primo uomo oltre i 50m",
+    "mayol": "Primo uomo oltre i 100m",
+    "zecchini": "Record femminile CWT",
+    "molchanov": "Record mondiale CWT"
+  },
+  "loading": {
+    "preparing": "Preparazione all'immersione...",
+    "breathing": "Respiro profondo...",
+    "diving": "Via!"
+  },
+  "zones": {
+    "surface": "Superficie",
+    "shallow": "Zona Epipelagica",
+    "twilight": "Zona Mesopelagica",
+    "deepTwilight": "Zona Crepuscolare",
+    "abyss": "Zona Abissale",
+    "theDeep": "L'Abisso"
+  }
+}

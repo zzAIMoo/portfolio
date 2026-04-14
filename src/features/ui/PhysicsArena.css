@@ -1,0 +1,126 @@
+.physics-arena {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  
+  touch-action: none;
+}
+
+.physics-bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  
+  background: rgba(14, 165, 233, 0.1);
+  box-shadow: 
+    inset 0 0 20px rgba(255, 255, 255, 0.2),
+    inset 0 4px 6px rgba(255, 255, 255, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  
+  user-select: none;
+  
+  transition: box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.physics-bubble:active {
+  cursor: grabbing;
+  box-shadow: 
+    inset 0 0 25px rgba(255, 255, 255, 0.4),
+    inset 0 4px 6px rgba(255, 255, 255, 0.5),
+    0 12px 24px rgba(0, 0, 0, 0.5);
+}
+
+.physics-bubble-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 10%; 
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mega-bubble {
+  
+  background: rgba(14, 165, 233, 0.15);
+  z-index: 10;
+}
+
+.mini-bubble {
+  z-index: 5;
+}
+
+.physics-arena-wave {
+  position: absolute;
+  
+  background: var(--bio-cyan);
+  pointer-events: none;
+  z-index: 10;
+  
+  
+  --s: 16px; 
+  --b: 2px; 
+  --m: 0.4; 
+  --R: calc(var(--s)*sqrt(var(--m)*var(--m) + 1) + var(--b)/2);
+  --_g: #0000 calc(99% - var(--b)), #000 calc(101% - var(--b)) 99%, #0000 101%;
+  
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5); 
+}
+
+.physics-arena-wave-top,
+.physics-arena-wave-bottom {
+  height: calc(2*var(--R));
+  width: 100%;
+  left: 0;
+  -webkit-mask:
+    radial-gradient(var(--R) at left 50% bottom calc(-1*var(--m)*var(--s)), var(--_g)) 
+     calc(50% - 2*var(--s)) calc(50% - var(--s)/2 - var(--b)/2)/calc(4*var(--s)) calc(var(--s) + var(--b)) repeat-x,
+    radial-gradient(var(--R) at left 50% top calc(-1*var(--m)*var(--s)),var(--_g)) 
+     50% calc(50% + var(--s)/2 + var(--b)/2)/calc(4*var(--s)) calc(var(--s) + var(--b)) repeat-x;
+  mask:
+    radial-gradient(var(--R) at left 50% bottom calc(-1*var(--m)*var(--s)), var(--_g)) 
+     calc(50% - 2*var(--s)) calc(50% - var(--s)/2 - var(--b)/2)/calc(4*var(--s)) calc(var(--s) + var(--b)) repeat-x,
+    radial-gradient(var(--R) at left 50% top calc(-1*var(--m)*var(--s)),var(--_g)) 
+     50% calc(50% + var(--s)/2 + var(--b)/2)/calc(4*var(--s)) calc(var(--s) + var(--b)) repeat-x;
+}
+
+.physics-arena-wave-left,
+.physics-arena-wave-right {
+  width: calc(2*var(--R));
+  height: 100%;
+  top: 0;
+  -webkit-mask:
+    radial-gradient(var(--R) at top 50% right calc(-1*var(--m)*var(--s)), var(--_g)) 
+     calc(50% - var(--s)/2 - var(--b)/2) calc(50% - 2*var(--s))/calc(var(--s) + var(--b)) calc(4*var(--s)) repeat-y,
+    radial-gradient(var(--R) at top 50% left calc(-1*var(--m)*var(--s)),var(--_g)) 
+     calc(50% + var(--s)/2 + var(--b)/2) 50%/calc(var(--s) + var(--b)) calc(4*var(--s)) repeat-y;
+  mask:
+    radial-gradient(var(--R) at top 50% right calc(-1*var(--m)*var(--s)), var(--_g)) 
+     calc(50% - var(--s)/2 - var(--b)/2) calc(50% - 2*var(--s))/calc(var(--s) + var(--b)) calc(4*var(--s)) repeat-y,
+    radial-gradient(var(--R) at top 50% left calc(-1*var(--m)*var(--s)),var(--_g)) 
+     calc(50% + var(--s)/2 + var(--b)/2) 50%/calc(var(--s) + var(--b)) calc(4*var(--s)) repeat-y;
+}
+
+.physics-arena-wave-top { top: 0; }
+.physics-arena-wave-bottom { 
+  bottom: 0; 
+  transform: scaleY(-1); 
+}
+.physics-arena-wave-left { left: 0; }
+.physics-arena-wave-right { 
+  right: 0; 
+  transform: scaleX(-1); 
+}

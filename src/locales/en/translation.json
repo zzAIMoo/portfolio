@@ -1,0 +1,114 @@
+{
+  "nav": {
+    "about": "About",
+    "skills": "Skills",
+    "projects": "Projects",
+    "legacy": "Legacy",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Every great dive",
+    "greetingHighlight": "starts with a breath",
+    "name": "SIMONE SECHI",
+    "title": "Full Stack Developer",
+    "cta": "Begin the Dive",
+    "scrollHint": "Scroll to dive deeper"
+  },
+  "about": {
+    "heading": "About Me",
+    "intro": "Full Stack Developer with 4 years of experience, passionate about deep ocean and freediving.",
+    "description": "I work at Tinke where I develop full-stack solutions. In the first 2 years I worked with Angular and Symfony, then I shifted to backend with Symfony and Python, specializing in AI with LangChain and LangGraph. I'm currently developing a Multi-Tenant SaaS with a multi-agent system for creating custom AI agents.",
+    "passion": "I love the deep ocean, freediving, and Subnautica. My personal freediving record is 22 meters."
+  },
+  "skills": {
+    "heading": "Skills",
+    "subtitle": "Technologies I work with daily",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend",
+      "ai": "AI & ML",
+      "tools": "Tools & DevOps"
+    }
+  },
+  "projects": {
+    "heading": "Projects",
+    "subtitle": "What I'm currently working on",
+    "saas": {
+      "title": "SaaS Multi-Agent Platform",
+      "description": "Multi-Tenant multi-agent system enabling the creation of custom AI agents. Built with Symfony and Python (LangChain/LangGraph).",
+      "note": "Screenshots coming soon - company project under active development."
+    },
+    "restaurant": {
+      "title": "Restaurant Starter Kit",
+      "description": "CLI tool for quickly creating and managing restaurant websites at scale. Monorepo architecture with shared design system.",
+      "tech": "Node.js, HTML/CSS/JS, Custom CLI"
+    },
+    "icdome": {
+      "title": "ICDome",
+      "description": "Mobile app (iOS/Android) for corporate Travel Security Management. Features real-time travel monitoring, SOS emergency handling, and destination warnings. Built using Angular and Symfony.",
+      "note": "Private B2B corporate application."
+    },
+    "viewProject": "View Project",
+    "comingSoon": "Coming Soon"
+  },
+  "legacy": {
+    "heading": "Legacy Projects",
+    "subtitle": "My first projects, built during high school - fossils from my journey",
+    "paleoscovery": {
+      "title": "Paleoscovery",
+      "description": "Educational game about Pietro Paleocapa built with Unity with 2 school friends."
+    },
+    "beedone": {
+      "title": "BeeDone",
+      "description": "Mobile task management app built with Flutter."
+    },
+    "flows": {
+      "title": "Flows Music",
+      "description": "Mobile music streaming app built with Flutter."
+    },
+    "tod": {
+      "title": "Truth or Dare",
+      "description": "Mobile Truth or Dare game built with Unity."
+    },
+    "drunkcards": {
+      "title": "Drunk Cards",
+      "description": "Mobile card game with fun mini-games"
+    }
+  },
+  "contact": {
+    "heading": "Contact",
+    "subtitle": "Let's reach new depths together",
+    "cta": "Write to Me",
+    "email": "simone.sechi24@gmail.com",
+    "social": "Follow Me"
+  },
+  "abyss": {
+    "question": "How deep are you willing to go?",
+    "secret": "You've reached the bottom of the abyss. Congratulations, explorer."
+  },
+  "depth": {
+    "meters": "m",
+    "depthLabel": "Depth"
+  },
+  "records": {
+    "surface": "Surface",
+    "personal": "My personal record",
+    "maiorca": "First man beyond 50m",
+    "mayol": "First man beyond 100m",
+    "zecchini": "Women's CWT record",
+    "molchanov": "World CWT record"
+  },
+  "loading": {
+    "preparing": "Preparing for the dive...",
+    "breathing": "Deep breath...",
+    "diving": "Go!"
+  },
+  "zones": {
+    "surface": "Surface",
+    "shallow": "Epipelagic Zone",
+    "twilight": "Mesopelagic Zone",
+    "deepTwilight": "Twilight Zone",
+    "abyss": "Abyssal Zone",
+    "theDeep": "The Deep"
+  }
+}

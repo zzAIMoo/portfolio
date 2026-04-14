@@ -1,0 +1,46 @@
+.abyss-section {
+  min-height: 60vh;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: var(--space-3xl);
+}
+
+.abyss-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-lg);
+}
+
+.abyss-question {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--text-muted);
+  font-weight: 300;
+  font-style: italic;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.abyss-line {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(34, 211, 238, 0.2), transparent);
+}
+
+.abyss-secret {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: rgba(34, 211, 238, 0.3);
+  max-width: 300px;
+  opacity: 0;
+  animation: fadeInUp 2s var(--ease-out) 1s forwards;
+}
+
+.abyss-credits {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  opacity: 0.4;
+  margin-top: var(--space-2xl);
+}
