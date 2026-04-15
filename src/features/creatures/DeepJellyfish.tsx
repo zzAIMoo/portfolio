@@ -58,12 +58,9 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const { depth } = globalScrollState;
-    const currentlyVisible = depth > 40;
-
-    groupRef.current.visible = currentlyVisible;
-    if (!currentlyVisible) return;
-
-    const visibility = Math.min(1, Math.max(0, (depth - 60) / 20));
+    const fadeIn = Math.min(1, Math.max(0, (depth - 40) / 20));
+    const fadeOut = Math.max(0, 1 - Math.max(0, depth - 120) / 20);
+    const visibility = Math.min(fadeIn, fadeOut);
 
     if (glowRef.current) {
       glowRef.current.intensity = 1.5 * visibility;
@@ -88,8 +85,8 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      
-      
+
+
       <mesh ref={bellRef}>
         <sphereGeometry args={[0.6, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
         <meshPhysicalMaterial
@@ -103,7 +100,7 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
         />
       </mesh>
 
-      
+
       <mesh ref={coreRef} scale={0.3}>
         <sphereGeometry args={[0.6, 6, 6]} />
         <meshBasicMaterial
@@ -112,7 +109,7 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
         />
       </mesh>
 
-      
+
       <mesh ref={tentacleRef} position={[0, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.35, 0.03, 6, 12]} />
         <meshBasicMaterial
@@ -122,7 +119,7 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
         />
       </mesh>
 
-      
+
       <pointLight
         ref={glowRef}
         color={color}

@@ -95,7 +95,8 @@ export const DEPTH_ZONES: DepthZone[] = [
   },
 ];
 
-export const MAX_DEPTH = 200;
+export const MAX_DEPTH_STANDARD = 200;
+export const MAX_DEPTH_HADAL = 10994;
 
 export function getZoneAtDepth(depth: number): DepthZone {
   for (let i = DEPTH_ZONES.length - 1; i >= 0; i--) {

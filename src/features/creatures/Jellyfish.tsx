@@ -1,23 +1,42 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useGLTF } from '@react-three/drei';
 import { globalScrollState } from '@/hooks/useScrollDepth';
 
 interface JellyfishProps {
   count?: number;
 }
 
+const JELLY_PALETTE = [
+  { color: '#bae6fd', emissive: '#22d3ee' },
+  { color: '#fbcfe8', emissive: '#f472b6' },
+  { color: '#ddd6fe', emissive: '#8b5cf6' },
+  { color: '#e9d5ff', emissive: '#c084fc' },
+  { color: '#86efac', emissive: '#22c55e' },
+  { color: '#fef08a', emissive: '#eab308' },
+];
+
 export function Jellyfish({ count = 3 }: JellyfishProps) {
   const jellyData = useMemo(() => {
-    return Array.from({ length: count }, (_, i) => ({
+    return Array.from({ length: count }, () => ({
       position: [
         (Math.random() - 0.5) * 16,
-        (Math.random() - 0.5) * 8,
+        (Math.random() - 0.5) * 12,
         -3 - Math.random() * 8,
       ] as [number, number, number],
-      scale: 0.3 + Math.random() * 0.5,
-      speed: 0.05 + Math.random() * 0.1,
+      scale: 0.15 + Math.random() * 0.8,
       phase: Math.random() * Math.PI * 2,
+      speedX: 0.02 + Math.random() * 0.05,
+      speedY: 0.05 + Math.random() * 0.1,
+      ampX: 1 + Math.random() * 2,
+      ampY: 0.5 + Math.random() * 1,
+      palette: JELLY_PALETTE[Math.floor(Math.random() * JELLY_PALETTE.length)],
+      initialRotation: [
+        Math.random() * 0.4 - 0.2,
+        Math.random() * Math.PI * 2,
+        Math.random() * 0.4 - 0.2
+      ] as [number, number, number],
     }));
   }, [count]);
 
@@ -28,8 +47,13 @@ export function Jellyfish({ count = 3 }: JellyfishProps) {
           key={i}
           position={data.position}
           scale={data.scale}
-          speed={data.speed}
           phase={data.phase}
+          speedX={data.speedX}
+          speedY={data.speedY}
+          ampX={data.ampX}
+          ampY={data.ampY}
+          palette={data.palette}
+          initialRotation={data.initialRotation}
         />
       ))}
     </group>
@@ -39,125 +63,110 @@ export function Jellyfish({ count = 3 }: JellyfishProps) {
 interface SingleJellyfishProps {
   position: [number, number, number];
   scale: number;
-  speed: number;
   phase: number;
+  speedX: number;
+  speedY: number;
+  ampX: number;
+  ampY: number;
+  palette: { color: string, emissive: string };
+  initialRotation: [number, number, number];
 }
 
-function SingleJellyfish({ position, scale, speed, phase }: SingleJellyfishProps) {
+function SingleJellyfish({
+  position,
+  scale,
+  phase,
+  speedX,
+  speedY,
+  ampX,
+  ampY,
+  palette,
+  initialRotation
+}: SingleJellyfishProps) {
   const groupRef = useRef<THREE.Group>(null);
-  const bellRef = useRef<THREE.Mesh>(null);
+  const { scene } = useGLTF('/models/jellyfish.glb');
 
-  const isVisible = useRef(false);
-  const initialDepth = globalScrollState.depth;
-  const isDeep = initialDepth > 50;
-  const visibility = Math.max(0, 1 - Math.max(0, initialDepth - 55) / 15);
+  const uniforms = useMemo(() => ({
+    uTime: { value: 0 },
+    uPhase: { value: phase },
+    uSpeed: { value: (speedX + speedY) / 2 }
+  }), [phase, speedX, speedY]);
 
-  const color = isDeep ? '#22d3ee' : '#a5f3fc';
-  const emissiveColor = isDeep ? '#22d3ee' : '#0891b2';
-  const emissiveIntensity = isDeep ? 0.8 : 0.1;
+  const clonedScene = useMemo(() => {
+    const clone = scene.clone();
+    clone.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material && !Array.isArray(mesh.material)) {
+          mesh.material = mesh.material.clone();
+          const mat = mesh.material as THREE.MeshStandardMaterial;
+          mat.color.set(palette.color);
+          if (mat.emissive) mat.emissive.set(palette.emissive);
 
-  const tentacles = useMemo(() => {
-    const lines: THREE.Line[] = [];
-    const tentacleCount = 6;
-    for (let t = 0; t < tentacleCount; t++) {
-      const points = [];
-      const angle = (t / tentacleCount) * Math.PI * 2;
-      const radius = 0.3;
-      for (let p = 0; p < 8; p++) {
-        points.push(
-          new THREE.Vector3(
-            Math.cos(angle) * radius,
-            -p * 0.2,
-            Math.sin(angle) * radius
-          )
-        );
+          mat.onBeforeCompile = (shader) => {
+            shader.uniforms.uTime = uniforms.uTime;
+            shader.uniforms.uPhase = uniforms.uPhase;
+            shader.uniforms.uSpeed = uniforms.uSpeed;
+            shader.vertexShader = `
+              uniform float uTime;
+              uniform float uPhase;
+              uniform float uSpeed;
+            ` + shader.vertexShader;
+            shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', `
+              #include <begin_vertex>
+              float mask = smoothstep(0.2, -0.5, position.y);
+              float time = uTime * 2.0 + uPhase;
+              float waveX = sin(time + position.y * 2.0) * 0.1 * mask;
+              float waveZ = cos(time * 0.8 + position.y * 1.5) * 0.08 * mask;
+              float pulse = sin(time * 1.5) * 0.05 * mask;
+              transformed.x += waveX;
+              transformed.z += waveZ;
+              transformed.y += pulse;
+            `);
+          };
+        }
       }
-      const geom = new THREE.BufferGeometry().setFromPoints(points);
-      const mat = new THREE.LineBasicMaterial({
-        color: isDeep ? '#22d3ee' : '#a5f3fc',
-        transparent: true,
-        opacity: 0.4,
-      });
-      lines.push(new THREE.Line(geom, mat));
-    }
-    return lines;
-  }, []);
+    });
+    return clone;
+  }, [scene, uniforms, palette]);
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const { depth } = globalScrollState;
-    const currentlyVisible = depth > 5 && depth < 50;
 
-    groupRef.current.visible = currentlyVisible;
-    isVisible.current = currentlyVisible;
-    if (!currentlyVisible) return;
+    const fadeIn = Math.min(1, Math.max(0, (depth - 50) / 8));
+    const fadeOut = Math.max(0, 1 - Math.max(0, depth - 92) / 8);
+    const visibility = Math.min(fadeIn, fadeOut);
 
-    const visibility = Math.max(0, 1 - Math.max(0, depth - 55) / 15);
+    uniforms.uTime.value = clock.getElapsedTime();
 
-    if (bellRef.current && bellRef.current.material && !Array.isArray(bellRef.current.material)) {
-      (bellRef.current.material as any).opacity = 0.5 * visibility;
-      // @ts-ignore
-      bellRef.current.material.emissiveIntensity = depth > 50 ? 0.8 : 0.2;
-    }
-
-    const t = clock.getElapsedTime() * speed;
-
-    if (groupRef.current) {
-      groupRef.current.position.y = position[1] + Math.sin(t * speed + phase) * 0.5;
-      groupRef.current.position.x = position[0] + Math.sin(t * speed * 0.3 + phase) * 0.3;
-    }
-
-    if (bellRef.current) {
-      const pulse = 1 + Math.sin(t * speed * 2 + phase) * 0.1;
-      bellRef.current.scale.set(pulse, 0.9 + Math.sin(t * speed * 2 + phase) * 0.15, pulse);
-    }
-
-    tentacles.forEach((line, tIdx) => {
-      const pos = line.geometry.attributes.position;
-      const angle = (tIdx / 6) * Math.PI * 2;
-      for (let p = 0; p < pos.count; p++) {
-        const sway = Math.sin(t * speed + p * 0.5 + phase + tIdx) * 0.05 * p;
-        pos.setX(p, Math.cos(angle) * 0.3 + sway);
-        pos.setZ(p, Math.sin(angle) * 0.3 + sway * 0.5);
+    clonedScene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material && !Array.isArray(mesh.material)) {
+          const mat = mesh.material as any;
+          mat.transparent = true;
+          mat.opacity = 0.6 * visibility;
+          if (mat.emissiveIntensity !== undefined) {
+            mat.emissiveIntensity = 0.8 * visibility;
+          }
+        }
       }
-      pos.needsUpdate = true;
     });
+
+    const t = clock.getElapsedTime();
+    const newX = position[0] + Math.sin(t * speedX + phase) * ampX;
+    const newY = position[1] + Math.cos(t * speedY + phase) * ampY;
+
+    groupRef.current.position.x = newX;
+    groupRef.current.position.y = newY;
+    groupRef.current.rotation.y = initialRotation[1] + Math.sin(t * 0.5 + phase) * 0.1;
+    groupRef.current.visible = visibility > 0.01;
   });
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-      
-
-      
-      <mesh ref={bellRef}>
-        <sphereGeometry args={[0.5, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2]} />
-        <meshPhysicalMaterial
-          color="#bae6fd"
-          emissive="#22d3ee"
-          emissiveIntensity={0.2}
-          roughness={0.1}
-          transmission={0.8}
-          transparent
-          opacity={0.5}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-
-      
-      <mesh scale={0.7}>
-        <sphereGeometry args={[0.5, 6, 4, 0, Math.PI * 2, 0, Math.PI / 2]} />
-        <meshBasicMaterial
-          color={emissiveColor}
-          transparent
-          opacity={(isDeep ? 0.3 : 0.1) * visibility}
-        />
-      </mesh>
-
-      
-      {visibility > 0 && tentacles.map((line, i) => {
-        (line.material as THREE.LineBasicMaterial).opacity = 0.4 * visibility;
-        return <primitive key={i} object={line} />;
-      })}
+      <primitive object={clonedScene} />
     </group>
   );
 }

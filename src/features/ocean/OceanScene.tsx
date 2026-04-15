@@ -3,12 +3,16 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Particles } from './Particles';
 import { CausticsPlane } from './CausticsPlane';
+import { WaterSurface } from './WaterSurface';
 import { GodRays } from './GodRays';
 import { getWaterColorAtDepth, getLightAtDepth } from '@/utils/depthZones';
 import { Jellyfish } from '@/features/creatures/Jellyfish';
 import { FishSchool } from '@/features/creatures/FishSchool';
 import { Anglerfish } from '@/features/creatures/Anglerfish';
-import { DeepJellyfish } from '@/features/creatures/DeepJellyfish';
+import { Blowfish } from '@/features/creatures/Blowfish';
+import { FishBone } from '@/features/creatures/FishBone';
+import { Titanic } from '@/features/creatures/Titanic';
+import { HadalBottom } from '@/features/creatures/HadalBottom';
 import { Freediver } from '@/features/freediver/Freediver';
 import { globalScrollState } from '@/hooks/useScrollDepth';
 
@@ -19,7 +23,6 @@ export function OceanScene() {
   const pointLightRef = useRef<THREE.PointLight>(null);
 
   const initialFogColor = useMemo(() => new THREE.Color(getWaterColorAtDepth(0)), []);
-
   const initialLightIntensity = getLightAtDepth(0);
 
   useFrame(({ scene }) => {
@@ -39,7 +42,7 @@ export function OceanScene() {
     }
 
     const lightIntensity = getLightAtDepth(depth);
-    if (ambientRef.current && Math.abs(ambientRef.current.intensity - (0.15 + lightIntensity * 0.6)) > 0.01) {
+    if (ambientRef.current) {
       ambientRef.current.intensity = THREE.MathUtils.lerp(
         ambientRef.current.intensity,
         0.15 + lightIntensity * 0.6,
@@ -47,7 +50,7 @@ export function OceanScene() {
       );
     }
 
-    if (dirLightRef.current && Math.abs(dirLightRef.current.intensity - (lightIntensity * 1.5)) > 0.01) {
+    if (dirLightRef.current) {
       dirLightRef.current.intensity = THREE.MathUtils.lerp(
         dirLightRef.current.intensity,
         lightIntensity * 1.5,
@@ -58,29 +61,20 @@ export function OceanScene() {
     if (pointLightRef.current) {
       const showBioluminescence = depth > 45;
       const targetInt = showBioluminescence ? 0.3 : 0;
-      if (Math.abs(pointLightRef.current.intensity - targetInt) > 0.01) {
-        pointLightRef.current.intensity = THREE.MathUtils.lerp(pointLightRef.current.intensity, targetInt, 0.05);
-      }
+      pointLightRef.current.intensity = THREE.MathUtils.lerp(pointLightRef.current.intensity, targetInt, 0.05);
     }
   });
 
   return (
     <>
-      
       <fogExp2 ref={fogRef} attach="fog" args={[initialFogColor, 0.01]} />
-
-      
       <ambientLight ref={ambientRef} intensity={0.5} color="#b3e0ff" />
-
-      
       <directionalLight
         ref={dirLightRef}
         position={[2, 10, 5]}
         intensity={initialLightIntensity * 1.5}
         color="#c5e8ff"
       />
-
-      
       <pointLight
         ref={pointLightRef}
         position={[0, 0, 2]}
@@ -90,22 +84,24 @@ export function OceanScene() {
         decay={2}
       />
 
-      
+      <WaterSurface />
       <CausticsPlane />
-
-      
       <GodRays />
-
-      
       <Particles />
 
-      
-      <Jellyfish count={3} />
+      <Jellyfish count={15} />
       <FishSchool count={20} />
-      <Anglerfish />
-      <DeepJellyfish count={4} />
-
       
+      <FishSchool count={12} speedMultiplier={2.2} />
+      <FishSchool count={8} speedMultiplier={3.5} />
+      
+      <Anglerfish />
+      
+      <Blowfish count={6} />
+      <FishBone />
+      <Titanic />
+      <HadalBottom />
+
       <Freediver />
     </>
   );

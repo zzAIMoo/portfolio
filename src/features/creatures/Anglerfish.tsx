@@ -1,108 +1,104 @@
-import { useRef } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useGLTF, useAnimations } from '@react-three/drei';
+// @ts-ignore
+import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils';
 import { globalScrollState } from '@/hooks/useScrollDepth';
+import { useHadalMode } from '@/context/HadalModeContext';
 
 export function Anglerfish() {
+  const { scene, animations } = useGLTF('/models/Anglerfish.glb');
+  const { isHadalModeActive } = useHadalMode();
+
+  if (isHadalModeActive) return null;
+
+  return <AnglerHuntLoop scene={scene} animations={animations} />;
+}
+
+function AnglerHuntLoop({ scene, animations }: { scene: THREE.Group, animations: any[] }) {
   const groupRef = useRef<THREE.Group>(null);
-  const lureRef = useRef<THREE.PointLight>(null);
-  const lureMeshRef = useRef<THREE.Mesh>(null);
-  const bodyRef = useRef<THREE.Group>(null);
+  const preyRef = useRef<THREE.Group>(null);
+  const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const { actions, names } = useAnimations(animations, groupRef);
+
+  const doryAsset = useGLTF('/models/Clownfish.glb');
+  const clonedPrey = useMemo(() => SkeletonUtils.clone(doryAsset.scene), [doryAsset.scene]);
+  const preyAnimations = useAnimations(doryAsset.animations, preyRef);
+
+  useEffect(() => {
+    if (names.length > 0 && actions[names[0]]) {
+      actions[names[0]]?.reset().fadeIn(0.5).play();
+      actions[names[0]]!.timeScale = 0.6;
+    }
+    if (preyAnimations.names.length > 0) {
+      preyAnimations.actions[preyAnimations.names[0]]?.reset().play();
+      preyAnimations.actions[preyAnimations.names[0]]!.timeScale = 2.0;
+    }
+  }, [actions, names, preyAnimations]);
 
   useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
+    if (!groupRef.current || !preyRef.current) return;
     const { depth } = globalScrollState;
-    const isCurrentlyVisible = depth > 60;
+    const t = clock.getElapsedTime();
 
-    if (groupRef.current) {
-      groupRef.current.visible = isCurrentlyVisible;
-    }
-    if (!isCurrentlyVisible) return;
+    const visibility = Math.min(1, Math.max(0, (depth - 125) / 25));
 
-    const dynamicVisibility = depth < 30 ? 0 : depth > 150 ? 0 : Math.min(1, Math.min((depth - 30) / 20, (150 - depth) / 20));
-
-    if (bodyRef.current) {
-      bodyRef.current.traverse((child) => {
-        if (child instanceof THREE.Mesh && child.material) {
-          child.material.opacity = dynamicVisibility;
+    clonedScene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material) {
+          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          materials.forEach(mat => {
+            const m = mat as THREE.MeshStandardMaterial;
+            m.transparent = true;
+            m.opacity = visibility;
+          });
         }
-      });
+      }
+    });
+
+    const loopDuration = 12;
+    const cycle = t % loopDuration;
+    const progress = cycle / loopDuration;
+
+    let x, z, rotY;
+    const baseY = -3;
+
+    if (progress < 0.5) {
+      const p = progress * 2;
+      x = -15 + p * 30;
+      z = -8;
+      rotY = Math.PI / 2;
+    } else {
+      const p = (progress - 0.5) * 2;
+      x = 15 - p * 30;
+      z = -12;
+      rotY = -Math.PI / 2;
     }
 
-    if (groupRef.current) {
-      groupRef.current.position.x = Math.sin(t * 0.02) * 8;
-      groupRef.current.position.z = -6 + Math.sin(t * 0.015) * 2;
-      groupRef.current.position.y = -1 + Math.sin(t * 0.03) * 0.5;
+    groupRef.current.position.set(x, baseY, z);
+    groupRef.current.rotation.y = rotY;
+    groupRef.current.rotation.x = Math.sin(t * 0.5) * 0.1;
 
-      groupRef.current.rotation.y = Math.cos(t * 0.02) > 0 ? 0 : Math.PI;
-    }
+    const preyX = x + (progress < 0.5 ? 2.5 : -2.5);
+    const preyY = baseY - 0.5 + Math.sin(t * 8) * 0.2;
+    const preyZ = z + Math.cos(t * 2) * 0.5;
+    preyRef.current.position.set(preyX, preyY, preyZ);
+    preyRef.current.rotation.y = rotY;
 
-    if (lureRef.current && lureMeshRef.current) {
-      const glow = Math.sin(t * 3) * 0.5 + 1.5;
-      lureRef.current.intensity = glow * dynamicVisibility;
-      (lureMeshRef.current.material as THREE.MeshStandardMaterial).emissiveIntensity = glow * dynamicVisibility;
-    }
+    groupRef.current.visible = visibility > 0.01;
+    preyRef.current.visible = visibility > 0.01;
   });
 
   return (
-    <group ref={groupRef} scale={1.2}>
-      
-
-      <group ref={bodyRef}>
-        
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[0.5, 6, 5]} />
-          <meshPhysicalMaterial
-            color="#0f172a"
-            roughness={0.9}
-            transparent
-          />
-        </mesh>
-
-        
-        <mesh position={[-0.7, 0, 0]} rotation={[0, 0, 0.2]}>
-          <coneGeometry args={[0.25, 0.6, 4]} />
-          <meshPhysicalMaterial
-            color="#0f172a"
-            roughness={0.9}
-            transparent
-          />
-        </mesh>
-
-        
-        <mesh position={[0.35, -0.2, 0]} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.3, 0.08, 0.2]} />
-          <meshPhysicalMaterial
-            color="#1e293b"
-            roughness={0.9}
-            transparent
-          />
-        </mesh>
+    <>
+      <group ref={groupRef} scale={1.2}>
+        <primitive object={clonedScene} />
       </group>
-
-      
-      <mesh position={[0.4, 0.5, 0]} rotation={[0, 0, -0.5]}>
-        <cylinderGeometry args={[0.02, 0.02, 0.6]} />
-        <meshStandardMaterial color="#334155" />
-      </mesh>
-
-      
-      <mesh ref={lureMeshRef} position={[0.6, 0.7, 0]}>
-        <sphereGeometry args={[0.08, 8, 8]} />
-        <meshStandardMaterial
-          color="#a5f3fc"
-          emissive="#22d3ee"
-          emissiveIntensity={2}
-          transparent
-        />
-        <pointLight
-          ref={lureRef}
-          color="#22d3ee"
-          intensity={2}
-          distance={5}
-          decay={2}
-        />
-      </mesh>
-    </group>
+      <group ref={preyRef} scale={0.3}>
+        <primitive object={clonedPrey} />
+      </group>
+    </>
   );
 }

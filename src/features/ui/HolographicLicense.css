@@ -25,6 +25,7 @@
   transform-style: preserve-3d;
   will-change: transform;
   cursor: pointer;
+  backface-visibility: hidden;
 }
 
 .holographic-card {

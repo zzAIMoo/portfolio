@@ -20,6 +20,7 @@ const LEGACY_PROJECTS = [
     icon: Music,
     tech: ['Flutter', 'Dart'],
     theme: 'music',
+    link: 'https://github.com/zzAIMoo/flows-music',
   },
   {
     key: 'tod',
@@ -254,7 +255,7 @@ export function LegacySection() {
                       className="relic-link-btn"
                     >
                       <ExternalLink size={14} />
-                      Play Store
+                      {project.link.includes('github') ? 'GitHub' : 'Play Store'}
                     </a>
                   )}
                 </div>

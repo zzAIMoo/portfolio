@@ -110,5 +110,19 @@
     "deepTwilight": "Twilight Zone",
     "abyss": "Abyssal Zone",
     "theDeep": "The Deep"
+  },
+  "hadal": {
+    "achievement_label": "Location Detected",
+    "achievement_reached": "ACHIEVEMENT REACHED",
+    "titanic": "Titanic Wreckage",
+    "leviathan": "Bio-Signature Detected",
+    "leviathan_alert": "Detecting multiple leviathan class organisms in the region. Are you certain whatever you're doing is worth it?",
+    "everest": "Mount Everest (Inverted)",
+    "hadal_zone": "Hadal Zone Entry",
+    "bottom": "Challenger Deep - Bottom Reached",
+    "resurface": "RAPID RESURFACE",
+    "active_status": "HADAL MODE ACTIVE: KEEP DIVING",
+    "warning": "WARNING: Entering unmapped waters.",
+    "initiate_btn": "INITIATE HADAL EXPLORATION (10,994m)"
   }
 }

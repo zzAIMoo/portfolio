@@ -110,5 +110,19 @@
     "deepTwilight": "Zona Crepuscolare",
     "abyss": "Zona Abissale",
     "theDeep": "L'Abisso"
+  },
+  "hadal": {
+    "achievement_label": "Localizzazione Rilevata",
+    "achievement_reached": "OBIETTIVO RAGGIUNTO",
+    "titanic": "Relitto del Titanic",
+    "leviathan": "Segnale Biologico Rilevato",
+    "leviathan_alert": "Rilevamento di molteplici organismi classe leviathan nella regione. Sei sicuro che ne valga la pena?",
+    "everest": "Monte Everest (Invertito)",
+    "hadal_zone": "Ingresso Zona Hadal",
+    "bottom": "Challenger Deep - Fondo Raggiunto",
+    "resurface": "RIEMERGERE VELOCEMENTE",
+    "active_status": "MODALITÀ HADAL ATTIVA: CONTINUA A SCENDERE",
+    "warning": "ATTENZIONE: Stai entrando in acque non mappate.",
+    "initiate_btn": "INIZIA ESPLORAZIONE HADAL (10.994m)"
   }
 }

@@ -42,5 +42,114 @@
   font-size: var(--fs-xs);
   color: var(--text-muted);
   opacity: 0.4;
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
+}
+
+.credits-trigger-btn {
+  background: rgba(34, 211, 238, 0.05);
+  border: 1px solid rgba(34, 211, 238, 0.1);
+  color: var(--bio-teal);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: var(--space-md);
+}
+
+.credits-trigger-btn:hover {
+  background: rgba(34, 211, 238, 0.15);
+  border-color: rgba(34, 211, 238, 0.4);
+  color: var(--bio-cyan);
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.1);
+}
+
+.hadal-trigger-container {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hadal-initiate-btn {
+  background: transparent;
+  border: 1px solid var(--bio-cyan);
+  color: var(--bio-cyan);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.2);
+}
+
+.hadal-initiate-btn:hover {
+  background: var(--bio-cyan);
+  color: white;
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.6);
+  transform: translateY(-2px);
+}
+
+.hadal-warning {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: #ef4444;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.hadal-active-status {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--bio-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.spinning-compass {
+  color: var(--bio-cyan);
+  animation: compassSpin 8s linear infinite;
+  width: 24px;
+  height: 24px;
+}
+
+@keyframes compassSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.pulse {
+  animation: btnPulse 2s infinite;
+}
+
+@keyframes btnPulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(34, 211, 238, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+}
+
+.btn-icon, .btn-icon-end {
+  width: 14px;
+  height: 14px;
 }

@@ -62,6 +62,14 @@ export function CausticsPlane() {
           }
 
           void main() {
+            // Distance from center for radial mask
+            // vUv is 0..1, center is 0.5, 0.5
+            vec2 center = vec2(0.5, 0.5);
+            float dist = distance(vUv, center);
+            
+            // Smoothstep to fade out from 0.2 to 0.5 distance
+            float radialMask = 1.0 - smoothstep(0.2, 0.5, dist);
+
             float c1 = caustic(vUv, uTime);
             float c2 = caustic(vUv * 1.3 + 0.5, uTime * 0.8);
             float c = (c1 + c2) * 0.5;
@@ -72,7 +80,7 @@ export function CausticsPlane() {
               c
             );
             
-            float alpha = c * uOpacity * 0.4;
+            float alpha = c * uOpacity * 0.4 * radialMask;
             gl_FragColor = vec4(color, alpha);
           }
         `}

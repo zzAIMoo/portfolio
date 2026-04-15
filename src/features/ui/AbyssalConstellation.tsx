@@ -12,11 +12,12 @@ interface SkillNode {
 
 const SKILLS: SkillNode[] = [
   { id: 'angular', label: 'Angular', category: 'frontend', x: 20, y: 45, related: ['typescript', 'ionic', 'capacitor'] },
+  { id: 'react', label: 'React', category: 'frontend', x: 30, y: 45, related: ['typescript'] },
   { id: 'typescript', label: 'TypeScript', category: 'frontend', x: 32, y: 35, related: ['angular'] },
   { id: 'ionic', label: 'Ionic', category: 'frontend', x: 25, y: 65, related: ['angular', 'capacitor'] },
-  { id: 'capacitor', label: 'Capacitor', category: 'frontend', x: 38, y: 55, related: ['ionic'] },
+  { id: 'capacitor', label: 'Capacitor', category: 'frontend', x: 38, y: 55, related: ['ionic', 'angular'] },
 
-  { id: 'symfony', label: 'Symfony', category: 'backend', x: 45, y: 35, related: ['php'] },
+  { id: 'symfony', label: 'Symfony', category: 'backend', x: 45, y: 35, related: ['php', 'doctrine', 'api_platform'] },
   { id: 'php', label: 'PHP', category: 'backend', x: 55, y: 50, related: ['symfony'] },
   { id: 'doctrine', label: 'Doctrine', category: 'backend', x: 50, y: 25, related: ['symfony', 'api_platform'] },
   { id: 'api_platform', label: 'API Platform', category: 'backend', x: 55, y: 40, related: ['symfony', 'doctrine'] },

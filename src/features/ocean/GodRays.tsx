@@ -5,7 +5,8 @@ import { globalScrollState } from '@/hooks/useScrollDepth';
 
 export function GodRays() {
   const groupRef = useRef<THREE.Group>(null);
-  const opacity = Math.max(0, 1 - globalScrollState.depth / 40) * 0.3;
+  const initialDepth = globalScrollState.depth;
+  const initialOpacity = Math.max(0, 1 - initialDepth / 40) * 0.3;
 
   const rays = useMemo(() => {
     const rayData = [];
@@ -26,17 +27,19 @@ export function GodRays() {
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const t = clock.getElapsedTime();
+    const { depth } = globalScrollState;
+    const dynamicOpacity = Math.max(0, 1 - depth / 40) * 0.3;
 
     groupRef.current.children.forEach((child, i) => {
       if (child instanceof THREE.Mesh) {
         const ray = rays[i];
-        const mat = child.material as THREE.MeshBasicMaterial;
-        mat.opacity = opacity * (0.5 + 0.5 * Math.sin(t * ray.speed + ray.phase));
+        const mat = child.material as THREE.ShaderMaterial;
+        if (mat.uniforms) {
+          mat.uniforms.uOpacity.value = dynamicOpacity * (0.5 + 0.5 * Math.sin(t * ray.speed + ray.phase));
+        }
       }
     });
   });
-
-  if (opacity <= 0) return null;
 
   return (
     <group ref={groupRef}>
@@ -47,13 +50,31 @@ export function GodRays() {
           rotation={[0, 0, ray.rotZ]}
         >
           <planeGeometry args={[ray.width, ray.height]} />
-          <meshBasicMaterial
-            color="#a5d8ff"
+          <shaderMaterial
             transparent
-            opacity={opacity}
-            side={THREE.DoubleSide}
             depthWrite={false}
             blending={THREE.AdditiveBlending}
+            side={THREE.DoubleSide}
+            uniforms={{
+              uOpacity: { value: initialOpacity },
+              uColor: { value: new THREE.Color("#a5d8ff") }
+            }}
+            vertexShader={`
+              varying vec2 vUv;
+              void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+              }
+            `}
+            fragmentShader={`
+              uniform float uOpacity;
+              uniform vec3 uColor;
+              varying vec2 vUv;
+              void main() {
+                float gradient = pow(vUv.y, 1.5);
+                gl_FragColor = vec4(uColor, uOpacity * gradient);
+              }
+            `}
           />
         </mesh>
       ))}
