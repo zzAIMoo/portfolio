@@ -3,11 +3,13 @@
   height: 60vh;
   min-height: 500px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   perspective: 1000px;
   position: relative;
   z-index: 5;
+  padding: 4rem 1rem;
 }
 
 .holographic-anchor {
@@ -25,7 +27,12 @@
   transform-style: preserve-3d;
   will-change: transform;
   cursor: pointer;
-  backface-visibility: hidden;
+}
+
+@supports (-moz-appearance: none) {
+  .holographic-wrapper {
+    backface-visibility: hidden;
+  }
 }
 
 .holographic-card {
@@ -292,46 +299,95 @@
 }
 
 @media (max-width: 768px) {
-  .holographic-wrapper {
-    max-width: 90%;
+  .holographic-container {
+    height: auto;
+    padding-bottom: 300px;
   }
 
-  .holo-stat {
-    width: 90px;
-    height: 90px;
-  }
-
-  .stat-value {
-    font-size: 1.1rem;
-  }
-
-  .stat-label {
-    font-size: 0.55rem;
-  }
-
-
-  .stat-tl {
-    top: -30px;
-    left: 0px;
-  }
-
-  .stat-tr {
-    top: -40px;
-    right: 0px;
-  }
-
-  .stat-bl {
-    bottom: -30px;
-    left: 0px;
-  }
-
-  .stat-br {
-    bottom: -10px;
-    right: 0px;
+  .holographic-anchor {
+    max-width: 100%;
   }
 
   .holographic-card {
-    padding: 1.5rem;
+    aspect-ratio: auto;
+    min-height: 220px;
+  }
+
+  .license-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .license-left {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px dashed rgba(56, 189, 248, 0.2);
+    margin-right: 0;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .license-right {
+    width: 100%;
+    align-items: center;
+  }
+
+  .license-title {
+    align-self: center;
+    font-size: 1rem;
+  }
+
+  .license-field .field-label {
+    width: 90px;
+    font-size: 0.65rem;
+  }
+
+  .license-field .field-value {
+    font-size: 0.85rem;
+  }
+
+  .holo-stat {
+    width: 80px;
+    height: 80px;
+    transform: translateZ(20px);
+  }
+
+  .stat-value {
+    font-size: 1rem;
+  }
+
+  .stat-label {
+    font-size: 0.5rem;
+  }
+
+  .stat-tl {
+    top: auto;
+    bottom: -110px;
+    left: 10%;
+  }
+
+  .stat-tr {
+    top: auto;
+    bottom: -110px;
+    right: 10%;
+  }
+
+  .stat-bl {
+    bottom: -210px;
+    left: 10%;
+  }
+
+  .stat-br {
+    bottom: -210px;
+    right: 10%;
+  }
+
+  .license-top-bar {
+    padding: 0.5rem 1rem;
+    font-size: 0.6rem;
   }
 }
 

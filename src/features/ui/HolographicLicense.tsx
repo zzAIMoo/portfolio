@@ -27,7 +27,7 @@ export function HolographicLicense() {
   };
 
   const handleMouseEnter = () => {
-    if (!isFlipped) setIsHovering(true);
+    setIsHovering(true);
   };
   const handleMouseLeave = () => {
     setIsHovering(false);

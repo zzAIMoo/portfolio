@@ -35,12 +35,29 @@ const SKILLS: SkillNode[] = [
 
 export function AbyssalConstellation() {
   const [activeNode, setActiveNode] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const activeObj = activeNode ? SKILLS.find(s => s.id === activeNode) : null;
 
+  const getPosition = (skill: SkillNode) => {
+    if (!isMobile) return { left: `${skill.x}%`, top: `${skill.y}%` };
+
+    const displayX = skill.x * 1.8 - 40;
+    const displayY = skill.y * 1.4 - 20;
+    return {
+      left: `${Math.max(5, Math.min(95, displayX))}%`,
+      top: `${Math.max(5, Math.min(95, displayY))}%`
+    };
+  };
+
   return (
     <div className="constellation-container">
-
       <svg className="constellation-svg">
         <defs>
           <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -49,32 +66,34 @@ export function AbyssalConstellation() {
           </linearGradient>
         </defs>
 
-
         {!activeObj && SKILLS.map(source =>
           source.related.map(targetId => {
             const target = SKILLS.find(s => s.id === targetId);
             if (!target) return null;
             if (source.id > target.id) return null;
+            const p1 = getPosition(source);
+            const p2 = getPosition(target);
             return (
               <line
                 key={`${source.id}-${target.id}`}
-                x1={`${source.x}%`} y1={`${source.y}%`}
-                x2={`${target.x}%`} y2={`${target.y}%`}
+                x1={p1.left} y1={p1.top}
+                x2={p2.left} y2={p2.top}
                 className="constellation-line-faint"
               />
             );
           })
         )}
 
-
         {activeObj && activeObj.related.map((targetId, i) => {
           const target = SKILLS.find(s => s.id === targetId);
           if (!target) return null;
+          const p1 = getPosition(activeObj);
+          const p2 = getPosition(target);
           return (
             <line
               key={`active-${activeObj.id}-${target.id}`}
-              x1={`${activeObj.x}%`} y1={`${activeObj.y}%`}
-              x2={`${target.x}%`} y2={`${target.y}%`}
+              x1={p1.left} y1={p1.top}
+              x2={p2.left} y2={p2.top}
               className="constellation-line-active"
               style={{ animationDelay: `${i * 0.1}s` }}
             />
@@ -82,23 +101,24 @@ export function AbyssalConstellation() {
         })}
       </svg>
 
-
       {SKILLS.map((skill) => {
         const isActive = activeNode === skill.id;
         const isRelated = activeObj?.related.includes(skill.id);
         const isFaded = activeNode !== null && !isActive && !isRelated;
+        const pos = getPosition(skill);
 
         return (
           <div
             key={skill.id}
             className={`constellation-node ${isActive ? 'node-active' : ''} ${isRelated ? 'node-related' : ''} ${isFaded ? 'node-faded' : ''} cat-${skill.category}`}
-            style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
-            onMouseEnter={() => setActiveNode(skill.id)}
-            onMouseLeave={() => setActiveNode(null)}
+            style={{ left: pos.left, top: pos.top }}
+            onMouseEnter={() => !isMobile && setActiveNode(skill.id)}
+            onMouseLeave={() => !isMobile && setActiveNode(null)}
+            onClick={() => isMobile && setActiveNode(activeNode === skill.id ? null : skill.id)}
           >
             <div className="node-glow" />
             <div className="node-core" />
-            <span className="node-label">{skill.label}</span>
+            <span className="node-label">{isMobile && !isActive && !isRelated ? null : skill.label}</span>
           </div>
         );
       })}

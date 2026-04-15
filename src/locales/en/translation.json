@@ -124,5 +124,12 @@
     "active_status": "HADAL MODE ACTIVE: KEEP DIVING",
     "warning": "WARNING: Entering unmapped waters.",
     "initiate_btn": "INITIATE HADAL EXPLORATION (10,994m)"
+  },
+  "credits": {
+    "title": "Deep Sea Credits",
+    "section_3d": "3D Biodiversity",
+    "section_sound": "Sound & Atmosphere",
+    "sound_desc": "The immersive experience is designed to simulate the silence and pressure of the pelagic abyss.",
+    "footer_tribute": "This portfolio is a tribute to underwater exploration and modern web development."
   }
 }

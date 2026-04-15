@@ -153,4 +153,33 @@
 .cat-ai .node-core { background-color: #34d399; } 
 .cat-tools .node-core { background-color: #fbbf24; } 
 
+@media (max-width: 768px) {
+  .constellation-container {
+    height: 70vh;
+    min-height: 450px;
+  }
+
+  .node-core {
+    width: 6px;
+    height: 6px;
+  }
+
+  .node-label {
+    font-size: 0.7rem;
+    top: 10px;
+  }
+
+  .constellation-node:hover .node-label,
+  .node-active .node-label {
+    font-size: 0.85rem;
+    transform: translateY(2px);
+  }
+
+  .constellation-node:hover .node-glow,
+  .node-active .node-glow {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 .node-active .node-core { background-color: #fff; }

@@ -1,4 +1,5 @@
 import { X, ExternalLink, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './CreditsModal.css';
 
 interface CreditsModalProps {
@@ -7,6 +8,7 @@ interface CreditsModalProps {
 }
 
 export function CreditsModal({ isOpen, onClose }: CreditsModalProps) {
+  const { t } = useTranslation();
   if (!isOpen) return null;
 
   return (
@@ -15,7 +17,7 @@ export function CreditsModal({ isOpen, onClose }: CreditsModalProps) {
         <div className="credits-header">
           <div className="credits-title-box">
              <Info size={16} className="credits-icon" />
-             <span className="credits-title">Deep Sea Credits</span>
+             <span className="credits-title">{t('credits.title')}</span>
           </div>
           <button className="credits-close" onClick={onClose}>
             <X size={18} />
@@ -24,7 +26,7 @@ export function CreditsModal({ isOpen, onClose }: CreditsModalProps) {
         
         <div className="credits-body">
           <div className="credits-section">
-            <h4 className="credits-section-title">3D Biodiversity</h4>
+            <h4 className="credits-section-title">{t('credits.section_3d')}</h4>
             <ul className="credits-list">
               <li className="credits-item">
                 <div className="credits-item-main">
@@ -63,12 +65,12 @@ export function CreditsModal({ isOpen, onClose }: CreditsModalProps) {
           </div>
 
           <div className="credits-section">
-            <h4 className="credits-section-title">Sound & Atmosphere</h4>
-            <p className="credits-asset-desc">L'esperienza immersiva è progettata per simulare il silenzio e la pressione degli abissi pelagici.</p>
+            <h4 className="credits-section-title">{t('credits.section_sound')}</h4>
+            <p className="credits-asset-desc">{t('credits.sound_desc')}</p>
           </div>
 
           <div className="credits-footer-text">
-            Questo portfolio è un tributo all'esplorazione subacquea e allo sviluppo web moderno.
+            {t('credits.footer_tribute')}
           </div>
         </div>
       </div>

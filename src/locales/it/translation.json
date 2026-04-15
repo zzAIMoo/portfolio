@@ -124,5 +124,12 @@
     "active_status": "MODALITÀ HADAL ATTIVA: CONTINUA A SCENDERE",
     "warning": "ATTENZIONE: Stai entrando in acque non mappate.",
     "initiate_btn": "INIZIA ESPLORAZIONE HADAL (10.994m)"
+  },
+  "credits": {
+    "title": "Crediti Deep Sea",
+    "section_3d": "Biodiversità 3D",
+    "section_sound": "Suono & Atmosfera",
+    "sound_desc": "L'esperienza immersiva è progettata per simulare il silenzio e la pressione degli abissi pelagici.",
+    "footer_tribute": "Questo portfolio è un tributo all'esplorazione subacquea e allo sviluppo web moderno."
   }
 }

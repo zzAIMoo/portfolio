@@ -225,12 +225,14 @@
   .sonar-container {
     flex-direction: column;
     align-items: center;
+    gap: 2rem;
   }
   
   .holo-panel {
     width: 100%;
     max-width: 100%;
     transform: translateY(20px);
+    padding: 1.5rem;
   }
   
   .holo-panel.holo-active {
@@ -238,8 +240,16 @@
   }
   
   .sonar-radar {
-    width: 280px;
-    height: 280px;
+    width: 250px;
+    height: 250px;
+  }
+
+  .holo-title {
+    font-size: 1.25rem;
+  }
+
+  .holo-description {
+    font-size: 0.9rem;
   }
 }
 
