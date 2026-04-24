@@ -80,12 +80,16 @@ export function Particles() {
       pos.needsUpdate = true;
 
       const mat = bioRef.current.material as THREE.PointsMaterial;
+      const bioBaseOpacity = Math.min(1, Math.max(0, (depth - 40) / 20));
       mat.opacity = (0.3 + Math.sin(t * 0.5) * 0.2) * bioBaseOpacity;
     }
-  });
 
-  const bubbleBaseOpacity = Math.max(0, 1 - Math.max(0, globalScrollState.depth - 70) / 20);
-  const bioBaseOpacity = Math.min(1, Math.max(0, (globalScrollState.depth - 40) / 20));
+    if (bubblesRef.current) {
+      const mat = bubblesRef.current.material as THREE.PointsMaterial;
+      const bubbleBaseOpacity = Math.max(0, 1 - Math.max(0, depth - 70) / 20);
+      mat.opacity = Math.max(0, (0.6 - scrollProgress) * bubbleBaseOpacity);
+    }
+  });
 
   return (
     <>
@@ -98,13 +102,14 @@ export function Particles() {
               count={bubbleCount}
               array={bubblePositions}
               itemSize={3}
+              args={[bubblePositions, 3]}
             />
           </bufferGeometry>
           <pointsMaterial
             size={0.08}
             color="#a5f3fc"
             transparent
-            opacity={Math.max(0, (0.6 - globalScrollState.scrollProgress) * bubbleBaseOpacity)}
+            opacity={0}
             sizeAttenuation
             depthWrite={false}
           />
@@ -119,6 +124,7 @@ export function Particles() {
             count={planktonCount}
             array={planktonPositions}
             itemSize={3}
+            args={[planktonPositions, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
@@ -139,13 +145,14 @@ export function Particles() {
             count={bioCount}
             array={bioPositions}
             itemSize={3}
+            args={[bioPositions, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
           size={0.06}
           color="#22d3ee"
           transparent
-          opacity={0.5 * bioBaseOpacity}
+          opacity={0}
           sizeAttenuation
           depthWrite={false}
         />

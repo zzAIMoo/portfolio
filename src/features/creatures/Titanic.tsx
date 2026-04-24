@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
@@ -9,6 +9,8 @@ export function Titanic() {
   const groupRef = useRef<THREE.Group>(null);
   const discoveryLightRef = useRef<THREE.PointLight>(null);
   const discoveryLight2Ref = useRef<THREE.PointLight>(null);
+
+  const emissiveColor = useMemo(() => new THREE.Color('#334455'), []);
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
@@ -31,9 +33,8 @@ export function Titanic() {
              const m = mat as THREE.MeshStandardMaterial;
              m.transparent = true;
              m.opacity = Math.min(1, visibility * 1.5); 
-             m.emissive = new THREE.Color('#334455');
+             m.emissive = emissiveColor;
              m.emissiveIntensity = visibility * 0.4;
-             m.needsUpdate = true;
           });
         }
       }

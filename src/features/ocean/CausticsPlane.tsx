@@ -62,12 +62,9 @@ export function CausticsPlane() {
           }
 
           void main() {
-            // Distance from center for radial mask
-            // vUv is 0..1, center is 0.5, 0.5
             vec2 center = vec2(0.5, 0.5);
             float dist = distance(vUv, center);
             
-            // Smoothstep to fade out from 0.2 to 0.5 distance
             float radialMask = 1.0 - smoothstep(0.2, 0.5, dist);
 
             float c1 = caustic(vUv, uTime);

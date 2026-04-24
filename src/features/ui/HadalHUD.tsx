@@ -31,6 +31,8 @@ export function HadalHUD() {
   const [showResurface, setShowResurface] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const hasPlayedCrackSound = useRef(false);
+  const achievementTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const alertTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const playSonarPing = useCallback(() => {
     try {
@@ -103,13 +105,15 @@ export function HadalHUD() {
             setLastAchievement(t(ms.labelKey));
             playSonarPing();
             const duration = ms.id === 'bottom' ? 8000 : 5000;
-            setTimeout(() => setLastAchievement(null), duration);
+            if (achievementTimerRef.current) clearTimeout(achievementTimerRef.current);
+            achievementTimerRef.current = setTimeout(() => setLastAchievement(null), duration);
           }
           
           if (ms.isAlert && ms.alertKey) {
             setCurrentAlert(t(ms.alertKey));
             playSonarPing();
-            setTimeout(() => setCurrentAlert(null), 8000);
+            if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
+            alertTimerRef.current = setTimeout(() => setCurrentAlert(null), 8000);
           }
         }
       });
@@ -129,6 +133,14 @@ export function HadalHUD() {
     window.addEventListener('scroll', checkMilestones);
     return () => window.removeEventListener('scroll', checkMilestones);
   }, [isHadalModeActive, unlockedMilestones, unlockMilestone, playSonarPing, playGlassCrack, t]);
+
+  useEffect(() => {
+    return () => {
+      if (achievementTimerRef.current) clearTimeout(achievementTimerRef.current);
+      if (alertTimerRef.current) clearTimeout(alertTimerRef.current);
+      audioContextRef.current?.close();
+    };
+  }, []);
 
   if (!isHadalModeActive) return null;
 

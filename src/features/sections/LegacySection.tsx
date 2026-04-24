@@ -71,7 +71,7 @@ function PaleocapaPixelArt() {
 }
 
 function HoneycombPattern() {
-  const hexPoints = (cx, cy, r) =>
+  const hexPoints = (cx: number, cy: number, r: number) =>
     Array.from({ length: 6 }, (_, i) => {
       const angle = (Math.PI / 3) * i - Math.PI / 6;
       return `${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`;
@@ -198,7 +198,7 @@ function PixelGrid() {
 export function LegacySection() {
   const { t } = useTranslation();
 
-  const renderThemeDecorations = (theme) => {
+  const renderThemeDecorations = (theme: string) => {
     switch (theme) {
       case 'pixel':
         return <><PixelGrid /><PaleocapaPixelArt /></>;

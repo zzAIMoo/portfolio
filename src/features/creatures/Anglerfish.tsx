@@ -12,7 +12,6 @@ export function Anglerfish() {
   const { isHadalModeActive } = useHadalMode();
 
   if (isHadalModeActive) return null;
-
   return <AnglerHuntLoop scene={scene} animations={animations} />;
 }
 
@@ -44,7 +43,7 @@ function AnglerHuntLoop({ scene, animations }: { scene: THREE.Group, animations:
 
     const visibility = Math.min(1, Math.max(0, (depth - 125) / 25));
 
-    clonedScene.traverse((child) => {
+    clonedScene.traverse((child: THREE.Object3D) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         if (mesh.material) {

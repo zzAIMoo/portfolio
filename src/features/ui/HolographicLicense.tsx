@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import './HolographicLicense.css';
 
 export function HolographicLicense() {
-  const { t } = useTranslation();
-  const isItalian = t('about.heading') === 'Chi Sono';
+  const { t, i18n } = useTranslation();
+  const isItalian = i18n.language === 'it';
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
@@ -13,6 +13,7 @@ export function HolographicLicense() {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;

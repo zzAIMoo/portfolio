@@ -90,7 +90,7 @@ function SingleFish({ asset, data, speedMultiplier }: { asset: any, data: any, s
 
     const visibility = Math.max(0, 1 - Math.max(0, depth - 25) / 5);
 
-    clonedScene.traverse((child) => {
+    clonedScene.traverse((child: THREE.Object3D) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         if (mesh.material) {

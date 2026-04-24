@@ -30,7 +30,6 @@ export function HadalBottom() {
              m.emissiveIntensity = visibility * 1.5; 
              m.roughness = 0.8; 
              m.metalness = 0.2;
-             m.needsUpdate = true;
           });
         }
       }

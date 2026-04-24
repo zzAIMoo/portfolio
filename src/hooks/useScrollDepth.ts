@@ -29,6 +29,8 @@ export function useScrollDepth() {
     for (const section of SECTIONS) {
       if (currentDepth >= section.depth) {
         current = section.id;
+      } else {
+        break;
       }
     }
 

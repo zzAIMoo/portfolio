@@ -24,6 +24,8 @@ export function GodRays() {
     return rayData;
   }, []);
 
+  const rayColor = useMemo(() => new THREE.Color("#a5d8ff"), []);
+
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
     const t = clock.getElapsedTime();
@@ -57,7 +59,7 @@ export function GodRays() {
             side={THREE.DoubleSide}
             uniforms={{
               uOpacity: { value: initialOpacity },
-              uColor: { value: new THREE.Color("#a5d8ff") }
+              uColor: { value: rayColor }
             }}
             vertexShader={`
               varying vec2 vUv;

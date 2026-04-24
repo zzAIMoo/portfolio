@@ -53,7 +53,6 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
   const bellRef = useRef<THREE.Mesh>(null);
   const coreRef = useRef<THREE.Mesh>(null);
   const tentacleRef = useRef<THREE.Mesh>(null);
-  const visibility = 1;
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return;
@@ -62,30 +61,23 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
     const fadeOut = Math.max(0, 1 - Math.max(0, depth - 120) / 20);
     const visibility = Math.min(fadeIn, fadeOut);
 
-    if (glowRef.current) {
-      glowRef.current.intensity = 1.5 * visibility;
-    }
-
     if (bellRef.current) (bellRef.current.material as THREE.MeshPhysicalMaterial).opacity = visibility * 0.4;
     if (coreRef.current) (coreRef.current.material as THREE.MeshBasicMaterial).opacity = visibility * 0.6;
     if (tentacleRef.current) (tentacleRef.current.material as THREE.MeshBasicMaterial).opacity = visibility * 0.5;
 
     const t = clock.getElapsedTime();
 
-    if (groupRef.current) {
-      groupRef.current.position.y = position[1] + Math.sin(t * speed + phase) * 0.5;
-      groupRef.current.position.x = position[0] + Math.sin(t * speed * 0.5 + phase) * 0.3;
-      groupRef.current.rotation.y = t * speed * 0.05;
-    }
+    groupRef.current.position.y = position[1] + Math.sin(t * speed + phase) * 0.5;
+    groupRef.current.position.x = position[0] + Math.sin(t * speed * 0.5 + phase) * 0.3;
+    groupRef.current.rotation.y = t * speed * 0.05;
 
     if (glowRef.current) {
-      glowRef.current.intensity = (0.8 + Math.sin(t * speed * 2 + phase) * 0.4) * visibility;
+      glowRef.current.intensity = (1.1 + Math.sin(t * speed * 2 + phase) * 0.4) * visibility;
     }
   });
 
   return (
     <group ref={groupRef} position={position} scale={scale}>
-
 
       <mesh ref={bellRef}>
         <sphereGeometry args={[0.6, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.6]} />
@@ -100,7 +92,6 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
         />
       </mesh>
 
-
       <mesh ref={coreRef} scale={0.3}>
         <sphereGeometry args={[0.6, 6, 6]} />
         <meshBasicMaterial
@@ -109,16 +100,14 @@ function SingleDeepJelly({ position, color, scale, speed, phase }: SingleDeepJel
         />
       </mesh>
 
-
       <mesh ref={tentacleRef} position={[0, -0.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.35, 0.03, 6, 12]} />
         <meshBasicMaterial
           color={color}
           transparent
-          opacity={visibility * 0.5}
+          opacity={0}
         />
       </mesh>
-
 
       <pointLight
         ref={glowRef}

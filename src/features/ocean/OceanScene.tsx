@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect, Suspense } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Particles } from './Particles';
@@ -22,17 +22,29 @@ export function OceanScene() {
   const dirLightRef = useRef<THREE.DirectionalLight>(null);
   const pointLightRef = useRef<THREE.PointLight>(null);
 
+  const [loadPhase, setLoadPhase] = useState(0);
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setLoadPhase(1), 1500); 
+    const t2 = setTimeout(() => setLoadPhase(2), 3000); 
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
+
   const initialFogColor = useMemo(() => new THREE.Color(getWaterColorAtDepth(0)), []);
   const initialLightIntensity = getLightAtDepth(0);
+  const targetColor = useMemo(() => new THREE.Color(), []);
 
   useFrame(({ scene }) => {
     const { depth, scrollProgress } = globalScrollState;
-    const targetColor = new THREE.Color(getWaterColorAtDepth(depth));
+    targetColor.set(getWaterColorAtDepth(depth));
 
     if (scene.background instanceof THREE.Color) {
       scene.background.lerp(targetColor, 0.05);
     } else {
-      scene.background = targetColor.clone();
+      scene.background = initialFogColor.clone();
     }
 
     if (fogRef.current) {
@@ -95,12 +107,20 @@ export function OceanScene() {
       <FishSchool count={12} speedMultiplier={2.2} />
       <FishSchool count={8} speedMultiplier={3.5} />
       
-      <Anglerfish />
-      
-      <Blowfish count={6} />
-      <FishBone />
-      <Titanic />
-      <HadalBottom />
+      {loadPhase >= 1 && (
+        <Suspense fallback={null}>
+          <Anglerfish />
+          <Blowfish count={6} />
+          <FishBone />
+        </Suspense>
+      )}
+
+      {loadPhase >= 2 && (
+        <Suspense fallback={null}>
+          <Titanic />
+          <HadalBottom />
+        </Suspense>
+      )}
 
       <Freediver />
     </>

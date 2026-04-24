@@ -138,7 +138,8 @@ function SingleJellyfish({
     const fadeOut = Math.max(0, 1 - Math.max(0, depth - 92) / 8);
     const visibility = Math.min(fadeIn, fadeOut);
 
-    uniforms.uTime.value = clock.getElapsedTime();
+    const t = clock.getElapsedTime();
+    uniforms.uTime.value = t;
 
     clonedScene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -154,7 +155,6 @@ function SingleJellyfish({
       }
     });
 
-    const t = clock.getElapsedTime();
     const newX = position[0] + Math.sin(t * speedX + phase) * ampX;
     const newY = position[1] + Math.cos(t * speedY + phase) * ampY;
 

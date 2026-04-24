@@ -62,7 +62,6 @@ function SingleBlowfish({ scene, data }: { scene: THREE.Group, data: any }) {
     const { depth } = globalScrollState;
     const t = clock.getElapsedTime();
 
-    // USER REQUEST: Visibility 30m - 50m
     const fadeIn = Math.min(1, Math.max(0, (depth - 30) / 5));
     const fadeOut = Math.max(0, 1 - Math.max(0, depth - 45) / 5);
     const visibility = Math.min(fadeIn, fadeOut);

@@ -55,7 +55,23 @@ export function FishBone() {
 
 function SingleBone({ scene, data }: { scene: THREE.Group, data: any }) {
   const meshRef = useRef<THREE.Group>(null);
-  const clonedScene = useMemo(() => SkeletonUtils.clone(scene), [scene]);
+  const clonedScene = useMemo(() => {
+    // @ts-ignore
+    const clone = SkeletonUtils.clone(scene);
+    clone.traverse((child: THREE.Object3D) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material) {
+          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          materials.forEach(mat => {
+            const m = mat as THREE.MeshStandardMaterial;
+            if (m.color) m.color.set('#e2e2e2');
+          });
+        }
+      }
+    });
+    return clone;
+  }, [scene]);
 
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
@@ -64,7 +80,7 @@ function SingleBone({ scene, data }: { scene: THREE.Group, data: any }) {
 
     const visibility = Math.min(1, Math.max(0, (depth - 100) / 10));
 
-    clonedScene.traverse((child) => {
+    clonedScene.traverse((child: THREE.Object3D) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         if (mesh.material) {
@@ -73,7 +89,6 @@ function SingleBone({ scene, data }: { scene: THREE.Group, data: any }) {
             const m = mat as THREE.MeshStandardMaterial;
             m.transparent = true;
             m.opacity = visibility;
-            if (m.color) m.color.set('#e2e2e2');
           });
         }
       }
